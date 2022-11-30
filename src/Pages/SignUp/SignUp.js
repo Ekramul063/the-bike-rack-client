@@ -33,7 +33,7 @@ const SignUp = () => {
 
     const saveUser = (name,email,seller,phone)=>{
         const user ={name,email,seller,phone}
-        fetch('http://localhost:5000/users',{
+        fetch('https://the-bike-rack-server-coral.vercel.app/users',{
             method:'POST',
             headers:{
                 'content-type':'application/json'

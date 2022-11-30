@@ -14,7 +14,7 @@ const Navbar = () => {
     const {data:dbUser = {}} = useQuery({
         queryKey:['user',user?.email],
         queryFn : async()=>{
-            const res = await fetch(`http://localhost:5000/users/${user?.email}`);
+            const res = await fetch(`https://the-bike-rack-server-coral.vercel.app/users/${user?.email}`);
             const data = await res.json();
             return data;
 
@@ -32,7 +32,7 @@ const Navbar = () => {
 
     const navItems = <React.Fragment>
         <li><Link to={'/'}>Home</Link></li>
-        <li><Link to={'/'}>Home</Link></li>
+        <li><Link to={'/blogs'}>Blogs</Link></li>
         <li>
             {
                 

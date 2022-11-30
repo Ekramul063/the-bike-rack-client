@@ -2,39 +2,34 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Loading from '../../Components/Loading/Loading';
 import { useLoaderData } from 'react-router-dom';
+import BrandProductCard from './BrandProductCard';
 
 const Brand = () => {
-    const brand = useLoaderData({});
+    const brand = useLoaderData();
     const { data: products, isLoading } = useQuery({
-        queryKey: ['products'],
+        queryKey: ['products',brand?.categoryName],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/products/${brand?.categoryName}`);
+            const res = await fetch(`https://the-bike-rack-server-coral.vercel.app/products/${brand?.categoryName}`);
             const data = await res.json();
             return data;
         }
     })
+
     if (isLoading) {
-        <Loading></Loading>
+       return <Loading></Loading>
     }
     return (
-        <div>
+        <div className='p-5'>
             <h2 className='font-bold text-2xl text-orange-600 underline '> {brand?.categoryName}</h2>
 
-            <div className="grid grid-">
-                <div className="card w-96 bg-base-100 shadow-xl">
-                    <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
-                    <div className="card-body">
-                        <h2 className="card-title">
-                            Shoes!
-                            <div className="badge badge-secondary">NEW</div>
-                        </h2>
-                        <p>If a dog chews shoes whose shoes does he choose?</p>
-                        <div className="card-actions justify-end">
-                            <div className="badge badge-outline">Fashion</div>
-                            <div className="badge badge-outline">Products</div>
-                        </div>
-                    </div>
-                </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 my-10 gap-2">
+               {
+                products?.map(product => <BrandProductCard
+                key={product._id}
+                product={product}
+                >
+                </BrandProductCard>)
+               }
             </div>
 
         </div>
