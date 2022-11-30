@@ -1,3 +1,4 @@
+import { GoogleAuthProvider } from 'firebase/auth';
 import React from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
@@ -5,12 +6,22 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+const googleProvider = new GoogleAuthProvider();
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const {createAccount,userProfile} = useContext(AuthContext)
+    const {createAccount,userProfile,signINWithGoole} = useContext(AuthContext)
     const [signUpError ,setSignUpError] = useState('');
     const navigate = useNavigate();
+
+    const googleSignIn = event => {
+        event.preventDefault();
+        signINWithGoole(googleProvider)
+            .then(result => {
+                navigate('/')
+            })
+            .catch(error => console.error(error.message))
+    }
 
     const handleSignUp = data => {
 
@@ -103,11 +114,11 @@ const SignUp = () => {
 
                         {signUpError && <p className='text-red-800 mt-2' role="alert">{signUpError}</p>}
 
-                        <p className='mt-3 text-center'>Have Account in The Bike Rack ? <Link to={'/login'} className='text-primary '>Please Login</Link></p>
+                        <p className='mt-3 text-center'>Have Account in The Bike Rack ? <Link to={'/register/login'} className='text-primary '>Please Login</Link></p>
                         <div className="flex flex-col w-full border-opacity-50">
                             <div className="divider">OR</div>
                         </div>
-                        <div className="btn btn-outline flex justify-center">CONTINUE WITH GOOGLE</div>
+                        <div onClick={googleSignIn} className="btn btn-outline flex justify-center">CONTINUE WITH GOOGLE</div>
                     </form>
                 </div>
 

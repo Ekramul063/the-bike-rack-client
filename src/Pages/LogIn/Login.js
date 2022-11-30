@@ -1,15 +1,24 @@
 import React from 'react';
+import { GoogleAuthProvider } from 'firebase/auth';
 import { useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
-
+const googleProvider = new GoogleAuthProvider();
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const {logIn} = useContext(AuthContext);
+    const {logIn,signINWithGoole} = useContext(AuthContext);
     const location = useLocation();
     const from = location?.state?.from?.path || '/';
     const navigate = useNavigate()
+    const googleSignIn = event => {
+        event.preventDefault();
+        signINWithGoole(googleProvider)
+            .then(result => {
+                navigate(from,{replace:true})
+            })
+            .catch(error => console.error(error.message))
+    }
     const handlelogIn = data =>{
         logIn(data.email,data.password)
         .then(result =>{
@@ -37,6 +46,12 @@ const Login = () => {
                     <div className="flex justify-center">
                         <input type="submit" value='LogIN' className='btn btn-primary' />
                     </div>
+
+                    <p className='mt-3 text-center'>Have Account in The Bike Rack ? <Link to={'/register/signup'} className='text-primary '>Please SignUp</Link></p>
+                        <div className="flex flex-col w-full border-opacity-50">
+                            <div className="divider">OR</div>
+                        </div>
+                        <div onClick={googleSignIn} className="btn btn-outline flex justify-center">CONTINUE WITH GOOGLE</div>
                    
                 </form>
             </div>

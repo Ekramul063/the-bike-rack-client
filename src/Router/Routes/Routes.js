@@ -48,7 +48,7 @@ const router = createBrowserRouter([
         children:[
            {
             path:'/dashboard/add-product',
-            element:<AddProduct></AddProduct>
+            element:<PrivateRoute><AddProduct></AddProduct></PrivateRoute>
            }
         ]
     },
