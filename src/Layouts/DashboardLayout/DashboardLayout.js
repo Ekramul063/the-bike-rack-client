@@ -41,7 +41,7 @@ const DashboardLayout = () => {
                     <label htmlFor="sidebar" className="drawer-overlay"></label>
                     
                     <ul className="menu p-4 w-80 bg-blue-200 text-base-content">
-                    <div className=" p-2 w-full flex justify-center mb-6 flex-col items-center">
+                    <div className=" p-2 w-full flex justify-center mb-6 flex-col items-centerg">
                     <img className='h-[80px] w-[80px] rounded rounded-ful' src={user.photoURL}alt="" />
                         <h3 className='mt-3 font-bold'>{user?.displayName? user.displayName: user.email}</h3>
                     </div>
