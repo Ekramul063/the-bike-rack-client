@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Yamaha = () => {
+const AdminRoute = () => {
     return (
         <div>
-            mama
+            
         </div>
     );
 };
 
-export default Yamaha;
+export default AdminRoute;

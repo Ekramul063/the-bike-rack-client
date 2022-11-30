@@ -3,7 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import DashboardLayout from '../../Layouts/DashboardLayout/DashboardLayout';
 import Main from '../../Layouts/Main/Main';
 import RegisterLayout from '../../Layouts/RegisterLayout/RegisterLayout';
-import Yamaha from '../../Pages/Brand/Yamaha/Yamaha';
+import Brand from '../../Pages/Brand/Brand';
+import AddProduct from '../../Pages/dashboard/AddProduct/AddProduct';
 import Home from '../../Pages/Home/Home';
 import Login from '../../Pages/LogIn/Login';
 import SignUp from '../../Pages/SignUp/SignUp';
@@ -19,11 +20,15 @@ const router = createBrowserRouter([
                 element:<Home></Home>
             },
             {
-                path:'/yamaha',
-                element:<PrivateRoute><Yamaha></Yamaha></PrivateRoute>
+                path:'/categories/:name',
+                loader: async ({params}) => {
+                    return fetch(`http://localhost:5000/categories/${params.name}`);
+                  },
+                element:<PrivateRoute><Brand></Brand></PrivateRoute>
             },
             {
                 path:'suzuki',
+
                 element:<PrivateRoute></PrivateRoute>
             }
         ]
@@ -33,7 +38,10 @@ const router = createBrowserRouter([
         path:'/dashboard',
         element:<DashboardLayout></DashboardLayout>,
         children:[
-           
+           {
+            path:'/dashboard/add-product',
+            element:<AddProduct></AddProduct>
+           }
         ]
     },
 

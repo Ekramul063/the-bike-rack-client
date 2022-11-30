@@ -1,9 +1,23 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 import Footer from '../../SharedComponents/Footer/Footer';
+import Loading from '../../Components/Loading/Loading';
 import Navbar from '../../SharedComponents/Navbar/Navbar';
 
 const Main = () => {
+    const {data:categories,isLoading} = useQuery({
+        queryKey:['categories'],
+        queryFn:async()=>{
+            const res = await fetch('http://localhost:5000/categories');
+            const data = await res.json();
+            return data;
+        }
+    })
+    
+   if(isLoading){
+    return <Loading></Loading>
+   }
     return (
         <div>
             <Navbar></Navbar>
@@ -24,10 +38,14 @@ const Main = () => {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 bg-base-100 text-base-content">
-                        <li><Link to={'/yamaha'}>Yamaha</Link></li>
-                        <li><Link to={'/suzuki'}>Suzuki</Link></li>
-                        <li><Link to={'/honda'}>Honda</Link></li>
+                    <ul className="menu p-4 w-80 bg-blue-200  font-bold text-lg h-full">
+                        {
+                            categories.map(category =><li
+                            key={category._id}
+                            ><Link to={`/categories/${category.categoryName}`}>{category.categoryName}</Link></li>)
+                        }
+                        
+                        
                        
                     </ul>
 

@@ -1,12 +1,27 @@
+import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { useEffect } from 'react';
+import { useState } from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../asets/logo.png'
+import Loading from '../../Components/Loading/Loading';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const Navbar = () => {
     const { user,logOut } = useContext(AuthContext);
 
+    const {data:dbUser = {}} = useQuery({
+        queryKey:['user',user?.email],
+        queryFn : async()=>{
+            const res = await fetch(`http://localhost:5000/users/${user?.email}`);
+            const data = await res.json();
+            return data;
+
+        }
+    })
+   
+   
    const handleLogOut=()=>{
     logOut()
     .then(()=>{
@@ -14,9 +29,21 @@ const Navbar = () => {
     })
     .catch(err => console.error(err))
     }
+
     const navItems = <React.Fragment>
         <li><Link to={'/'}>Home</Link></li>
         <li><Link to={'/'}>Home</Link></li>
+        <li>
+            {
+                
+                dbUser?.seller?
+                <Link to={'/dashboard'}>Dashboard</Link>
+                :
+                <Link to={'/dashboard'}>My profile</Link>
+
+            }
+           
+            </li>
         <li>
             {
                 user?.uid ?
@@ -27,6 +54,8 @@ const Navbar = () => {
         </li>
         <li><Link to={'/register/signup'}>SignUp</Link></li>
     </React.Fragment>
+
+    
     return (
         <div className="navbar justify-between bg-blue-300">
             <div className="navbar-start">

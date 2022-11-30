@@ -23,10 +23,8 @@ const DashboardLayout = () => {
                 </div>
                 <div className="drawer-side">
                     <label htmlFor="sidebar" className="drawer-overlay"></label>
-                    <ul className="menu p-4 w-80 bg-base-100 text-base-content">
-                        <li><Link to={'/yamaha'}>Yamaha</Link></li>
-                        <li><Link to={'/suzuki'}>Suzuki</Link></li>
-                        <li><Link to={'/honda'}>Honda</Link></li>
+                    <ul className="menu p-4 w-80 bg-blue-200 text-base-content">
+                        <li><Link to={'/dashboard/add-product'}>Add Product</Link></li>
                        
                     </ul>
 
