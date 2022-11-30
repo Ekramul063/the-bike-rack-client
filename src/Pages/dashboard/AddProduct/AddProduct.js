@@ -2,15 +2,56 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 
 const AddProduct = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const imageHostKey = process.env.REACT_APP_imgbb_key;
-    console.log(imageHostKey)
+
     const handleAddProduct = data => {
-        const image = data.image[0]
-        console.log(data)
+        const image = data.image[0];
+        const formData = new FormData();
+        formData.append('image', image);
+        const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imageHostKey}`;
+        //console.log(imageHostKey);
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => res.json())
+            .then(imageData => {
+                if (imageData.success) {
+                    //console.log(imageData.data.url)
+                    const product = {
+                        image: imageData.data.url,
+                        name: data.name,
+                        price: data.price,
+                        officialPrice: data.newPrice,
+                        categoryName: data.brand,
+                        condition: data.condition,
+                        yearOfPurchase: data.purchase,
+                        phone: data.phone,
+                        location: data.location,
+                        description: data.describe,
+                    }
+                     fetch('http://localhost:5000/products',{
+                        method:'POST',
+                        headers:{
+                            'content-type':'application/json'
+                        },
+                        body:JSON.stringify(product)
+                     })
+                    .then(res=> res.json())
+                    .then(data => {
+                        if(data.acknowledged === true){
+                            toast.success('insert product successfully')
+                           }
+                    })
+                   
+                }
+            })
+
 
     }
 
@@ -54,17 +95,17 @@ const AddProduct = () => {
                                 {
                                     brands.map(brand => <option key={brand._id} value={brand.categoryName}>{brand.categoryName}</option>)
                                 }
-                                
+
                             </select>
-                            
+
                             {errors.brand && <p className='text-red-800 mt-2' role="alert">{errors.brand?.message}</p>}
                         </div>
 
                         <div className="form-control w-full ">
                             <label className="label">
-                                <span className="label-text">Showroom Price</span>
+                                <span className="label-text">Official Price</span>
                             </label>
-                            <input  {...register("newPrice", { required: "Showroom Price field is required" })} type="text" className="input input-bordered w-full " />
+                            <input  {...register("newPrice", { required: "Official Price field is required" })} type="text" className="input input-bordered w-full " />
                             {errors.newPrice && <p className='text-red-800 mt-2' role="alert">{errors.newPrice?.message}</p>}
                         </div>
                         <div className="form-control w-full ">
@@ -100,7 +141,7 @@ const AddProduct = () => {
                             <label className="label">
                                 <span className="label-text">Location</span>
                             </label>
-                            <textarea  {...register("location", { required: "location field is required",maxLength: 50 })} type="text" className="h-[60px] input input-bordered w-full " />
+                            <textarea  {...register("location", { required: "location field is required", maxLength: 50 })} type="text" className="h-[60px] input input-bordered w-full " />
                             {errors.location && <p className='text-red-800 mt-2' role="alert">{errors.location?.message}</p>}
                         </div>
 

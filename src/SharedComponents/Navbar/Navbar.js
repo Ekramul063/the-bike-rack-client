@@ -67,7 +67,7 @@ const Navbar = () => {
                         {navItems}
                     </ul>
                 </div>
-                <Link to={`/`}><img className='h-[100px] w-[100px]' src={logo} alt="logo" /></Link>
+                <Link to={`/`}><img className='h-[100px] w-[120px]' src={logo} alt="logo" /></Link>
             </div>
 
             <div className=" hidden lg:flex ">

@@ -7,6 +7,7 @@ import Brand from '../../Pages/Brand/Brand';
 import AddProduct from '../../Pages/dashboard/AddProduct/AddProduct';
 import Home from '../../Pages/Home/Home';
 import Login from '../../Pages/LogIn/Login';
+import Products from '../../Pages/Products/Products';
 import SignUp from '../../Pages/SignUp/SignUp';
 import PrivateRoute from '../PrivateRoute/PrivateRoute';
 
@@ -19,6 +20,11 @@ const router = createBrowserRouter([
                 path:'/',
                 element:<Home></Home>
             },
+            // {
+            //     path:'/',
+            //     loader:fetch('http://localhost:5000/products'),
+            //     element:<Products></Products>
+            // },
             {
                 path:'/categories/:name',
                 loader: async ({params}) => {
