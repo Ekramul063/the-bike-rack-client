@@ -16,9 +16,7 @@ const DashboardLayout = () => {
             return data;
         }
     })
-    if(isLoading){
-        return <Loading></Loading>
-    }
+   
     return (
         <div>
             <Navbar></Navbar>
@@ -42,13 +40,26 @@ const DashboardLayout = () => {
                     
                     <ul className="menu p-4 w-80 bg-blue-200 text-base-content">
                     <div className=" p-2 w-full flex justify-center mb-6 flex-col items-centerg">
-                    <img className='h-[80px] w-[80px] rounded rounded-ful' src={user.photoURL}alt="" />
-                        <h3 className='mt-3 font-bold'>{user?.displayName? user.displayName: user.email}</h3>
+                        {
+                            user?.uid?
+                            <img className='h-[80px] w-[80px] rounded rounded-ful' src={user?.photoURL}alt="Profile" />
+                            :
+                            <h2 className="font-bold text-red-800 text-xl">No account founded <br/> Please LogIn or SignUp </h2>
+
+                    }
+                   
+                    <h3 className='mt-3 font-bold'>{user?.displayName? user.displayName: user?.email}</h3>
                     </div>
                         {
+                             <li className='border mb-3'><Link to={'/dashboard/all-seller'}>All Seller</Link></li>
+                        }   
+                        {
+                             <li className='border mb-3'><Link to={'/dashboard'}>Order List</Link></li>
+                        }   
+
+                        {
                             dbUser?.seller? <li className='border'><Link to={'/dashboard/add-product'}>Add Product</Link></li>:''
-                        }
-                       
+                        }   
                        
                     </ul>
 

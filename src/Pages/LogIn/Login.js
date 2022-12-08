@@ -1,30 +1,37 @@
-import React from 'react';
+import {React,useState} from 'react';
 import { GoogleAuthProvider } from 'firebase/auth';
 import { useContext } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useToken from '../../hooks/useToken';
 const googleProvider = new GoogleAuthProvider();
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const {logIn,signINWithGoole} = useContext(AuthContext);
+    const [logInError,setLogInError] = useState();
     const location = useLocation();
     const from = location?.state?.from?.path || '/';
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const [createUserTokenEmail,setCreateUserTokenEmail] =useState('');
+    const [token] = useToken(createUserTokenEmail);
+    if(token){
+        navigate(from,{replace:true})
+    }
     const googleSignIn = event => {
         event.preventDefault();
         signINWithGoole(googleProvider)
             .then(result => {
                 navigate(from,{replace:true})
             })
-            .catch(error => console.error(error.message))
+            .catch(error => setLogInError(error.message))
     }
     const handlelogIn = data =>{
         logIn(data.email,data.password)
         .then(result =>{
-            navigate(from,{replace:true})
+           setCreateUserTokenEmail(data.email)
         })
-        .catch(err => console.error(err))
+        .catch(err =>setLogInError(err.message))
         
     };
     return (
@@ -47,7 +54,8 @@ const Login = () => {
                         <input type="submit" value='LogIN' className='btn btn-primary' />
                     </div>
 
-                    <p className='mt-3 text-center'>Have Account in The Bike Rack ? <Link to={'/register/signup'} className='text-primary '>Please SignUp</Link></p>
+                    <p className='mt-3 text-center'> Don't have an account in The Bike Rack ? <Link to={'/register/signup'} className='text-primary '>Please SignUp</Link></p>
+                    {logInError && <p className='text-red-800 mt-2' role="alert">{logInError}</p>}
                         <div className="flex flex-col w-full border-opacity-50">
                             <div className="divider">OR</div>
                         </div>

@@ -6,6 +6,8 @@ import RegisterLayout from '../../Layouts/RegisterLayout/RegisterLayout';
 import Blogs from '../../Pages/Blogs/Blogs';
 import Brand from '../../Pages/Brand/Brand';
 import AddProduct from '../../Pages/dashboard/AddProduct/AddProduct';
+import AllSeller from '../../Pages/dashboard/AllSeller/AllSeller';
+import Orders from '../../Pages/dashboard/Orders/Orders';
 import Home from '../../Pages/Home/Home';
 import Login from '../../Pages/LogIn/Login';
 import Products from '../../Pages/Products/Products';
@@ -49,6 +51,14 @@ const router = createBrowserRouter([
            {
             path:'/dashboard/add-product',
             element:<PrivateRoute><AddProduct></AddProduct></PrivateRoute>
+           },
+           {
+            path:'/dashboard',
+            element:<PrivateRoute><Orders></Orders></PrivateRoute>
+           },
+           {
+            path:'/dashboard/all-seller',
+            element:<PrivateRoute><AllSeller></AllSeller></PrivateRoute>
            }
         ]
     },

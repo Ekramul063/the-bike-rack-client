@@ -1,15 +1,18 @@
 
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 const AddProduct = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const {user} = useContext(AuthContext);
+    const { register, handleSubmit, formState: { errors } } = useForm({});
 
     const imageHostKey = process.env.REACT_APP_imgbb_key;
 
     const handleAddProduct = data => {
+        console.log(data)
         const image = data.image[0];
         const formData = new FormData();
         formData.append('image', image);
@@ -34,6 +37,7 @@ const AddProduct = () => {
                         phone: data.phone,
                         location: data.location,
                         description: data.describe,
+                        seller:user?.email
                     }
                      fetch('https://the-bike-rack-server-coral.vercel.app/products',{
                         method:'POST',
@@ -71,6 +75,13 @@ const AddProduct = () => {
                 <div className=' border border-spacing-1 px-7 py-14'>
                     <h3 className='text-2xl font-bold text-center mb-10'>Add Product</h3>
                     <form className='w-[385px]' onSubmit={handleSubmit(handleAddProduct)}>
+
+                        {/* <div className="form-control w-full ">
+                            <label className="label">
+                                <span className="label-text">Seller</span>
+                            </label>
+                            <input  defaultValue={user?.email} readOnly {...register("seller")} type="text" className="input input-bordered w-full " />  
+                        </div> */}
 
                         <div className="form-control w-full ">
                             <label className="label">

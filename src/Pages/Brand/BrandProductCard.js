@@ -12,7 +12,7 @@ const BrandProductCard = ({product}) => {
             <p>{description}</p>
             <div className="card-actions justify-end">
                 <div className="badge badge-outline">Details</div>
-                <div className="badge badge-outline">Buy Now</div>
+                <label htmlFor="buy-product-modal" className="btn badge badge-outline">Buy Now</label>
             </div>
         </div>
     </div>

@@ -6,13 +6,20 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useToken from '../../hooks/useToken';
 const googleProvider = new GoogleAuthProvider();
 
 const SignUp = () => {
+    
     const { register, handleSubmit, formState: { errors } } = useForm();
     const {createAccount,userProfile,signINWithGoole} = useContext(AuthContext)
     const [signUpError ,setSignUpError] = useState('');
     const navigate = useNavigate();
+    const [createUserEmail,setCreatedUserEmail] = useState('');
+    const [token] = useToken(createUserEmail);
+    if(token){
+        navigate('/')
+    }
 
     const googleSignIn = event => {
         event.preventDefault();
@@ -24,8 +31,6 @@ const SignUp = () => {
     }
 
     const handleSignUp = data => {
-
-        console.log(data)
         createAccount(data.email,data.password)
         .then(result =>{
             const userInfo ={
@@ -36,7 +41,7 @@ const SignUp = () => {
             .catch(err => console.log(err));
             saveUser(data.name,data.email,data.seller,data.phone)
             toast.success('Create Account Successfully')
-           navigate('/')
+           
 
         })
         .catch(err => setSignUpError(err.message));
@@ -53,13 +58,16 @@ const SignUp = () => {
         })
         .then(res => res.json())
         .then(data =>{
-            console.log(data);
+            setCreatedUserEmail(data.email)
         })
 
     }
+    const getToken = email =>{
+      
+    }
     return (
         <div>
-            <div className='flex items-center justify-center h-[800px] '>
+            <div className='flex items-center justify-center h-[900px] '>
                 <div className='drop-shadow-xl border border-spacing-1 px-7 py-14'>
                     <h3 className='text-2xl font-bold text-center mb-10'>SIGNUP</h3>
                     <form className='w-[385px]' onSubmit={handleSubmit(handleSignUp)}>
@@ -101,6 +109,14 @@ const SignUp = () => {
                             })} type="password" className="input input-bordered w-full " />
                             {errors.password && <p className='text-red-800 mt-2' role="alert">{errors.password?.message}</p>}
                         </div>
+
+                        {/* <div className="form-control w-full ">
+                            <label className="label">
+                                <span className="label-text">Upload Profile Image</span>
+                            </label>
+                            <input  {...register("profileImage", { required: "Image field is required" })} type="file" className=" w-full " />
+                            {errors.profileImage && <p className='text-red-800 mt-2' role="alert">{errors.profileImage?.message}</p>}
+                        </div> */}
 
                         <div className="form-control mt-3">
                             <label className="label cursor-pointer">

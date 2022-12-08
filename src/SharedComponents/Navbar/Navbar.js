@@ -1,20 +1,20 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../asets/logo.png'
-import Loading from '../../Components/Loading/Loading';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
 
 const Navbar = () => {
     const { user,logOut } = useContext(AuthContext);
-
+    const url =`https://the-bike-rack-server-coral.vercel.app/users/${user?.email}`;
+    
+   
     const {data:dbUser = {}} = useQuery({
         queryKey:['user',user?.email],
         queryFn : async()=>{
-            const res = await fetch(`https://the-bike-rack-server-coral.vercel.app/users/${user?.email}`);
+            const res = await fetch(url);
             const data = await res.json();
             return data;
 
@@ -75,10 +75,6 @@ const Navbar = () => {
                     {navItems}
                 </ul>
             </div>
-
-            {/* <div className="navbar-end">
-                <a className="btn">Get started</a>
-            </div> */}
         </div>
     );
 };
