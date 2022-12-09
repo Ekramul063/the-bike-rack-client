@@ -9,7 +9,7 @@ const Orders = () => {
     const { data: orders = []} = useQuery({
         queryKey: ['orders', user?.email],
         queryFn: async () => {
-            const res = await fetch(`https://the-bike-rack-server-coral.vercel.app/bookings/${user?.email}`,{
+            const res = await fetch(`http://localhost:5000/bookings/${user?.email}`,{
                 headers:{
                     'authorization':`bearer ${localStorage.getItem('accessToken')}`
                 }

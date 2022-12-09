@@ -2,13 +2,16 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useContext } from 'react';
 import { Link, Outlet } from 'react-router-dom';
-import Loading from '../../Components/Loading/Loading';
 import { AuthContext } from '../../Context/AuthProvider/AuthProvider';
+import useAdmin from '../../hooks/useAdmin';
 import Navbar from '../../SharedComponents/Navbar/Navbar';
 
 const DashboardLayout = () => {
     const {user} = useContext(AuthContext);
-    const {data:dbUser,isLoading}=useQuery({
+
+    const [isAdmin] = useAdmin(user?.email);
+
+    const {data:dbUser = {}}=useQuery({
         queryKey:['user',user?.email],
         queryFn:async()=>{
             const res = await fetch(`https://the-bike-rack-server-coral.vercel.app/users/${user?.email}`);
@@ -50,7 +53,7 @@ const DashboardLayout = () => {
                    
                     <h3 className='mt-3 font-bold'>{user?.displayName? user.displayName: user?.email}</h3>
                     </div>
-                        {
+                        {isAdmin &&
                              <li className='border mb-3'><Link to={'/dashboard/all-seller'}>All Seller</Link></li>
                         }   
                         {
