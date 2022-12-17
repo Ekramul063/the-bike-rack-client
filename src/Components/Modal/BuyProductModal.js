@@ -82,13 +82,6 @@ const BuyProductModal = ({ buyProduct }) => {
                             </label>
                             <input defaultValue={location} disabled name='location' type="text" className="input input-bordered w-full mb-3" />
                         </div>
-
-                        <div className="form-control">
-                            <label className="label">
-                                <span className="label-text">Buyer</span>
-                            </label>
-                            <input name='user' defaultValue={user?.uid ? user?.displayName : user?.email} disabled type="text" className="input input-bordered w-full mb-3" />
-                        </div>
                         {
                             dbUser &&
 

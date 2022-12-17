@@ -1,20 +1,24 @@
 import { useQuery } from '@tanstack/react-query';
+import { deleteUser } from 'firebase/auth';
 import React from 'react';
+import { useContext } from 'react';
 import { toast } from 'react-hot-toast';
 import Loading from '../../../Components/Loading/Loading';
+import { AuthContext } from '../../../Context/AuthProvider/AuthProvider';
 
 const AllSeller = () => {
+    const {removeUser} = useContext(AuthContext)
     const { data: sellers = [], isLoading,refetch} = useQuery({
         queryKey: ['sellers'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/users/seller');
+            const res = await fetch('https://the-bike-rack-server-coral.vercel.app/users/seller');
             const data = await res.json();
             return data;
         }
     })
 
     const handleMakeAdmin = id => {
-        fetch(`http://localhost:5000/users/seller/${id}`,{
+        fetch(`https://the-bike-rack-server-coral.vercel.app/users/seller/${id}`,{
             method: 'PUT',
             headers:{
                'authorization':`bearer ${localStorage.getItem('accessToken')}`
@@ -29,8 +33,9 @@ const AllSeller = () => {
             })
         }
 
-        const handleDeleteSeller = id =>{
-            fetch(`http://localhost:5000/users/seller/${id}`,{
+        const handleDeleteSeller = (id,email) =>{
+            console.log(id,email)
+            fetch(`https://the-bike-rack-server-coral.vercel.app/users/seller/${id}`,{
                 method:'DELETE',
                 headers:{
                     'authorization':`bearer ${localStorage.getItem('accessToken')}`
@@ -40,6 +45,12 @@ const AllSeller = () => {
             .then(data =>{
                 console.log(data)
                 if(data.deletedCount > 0){
+                    console.log(data)
+                    removeUser(email)
+                    .then(()=>{
+                    })
+                    .catch(error => console.log(error))
+
                     toast.error('Delete seller successfully');
                     refetch()
                 }
@@ -76,7 +87,7 @@ const AllSeller = () => {
                                                 <button onClick={() => handleMakeAdmin(seller._id)} className='btn btn-xs  bg-green-800'>Make Admin</button>
                                             }
                                             </td>
-                                            <td className='py-4'> <button onClick={()=> handleDeleteSeller(seller._id)} className='btn btn-xs bg-red-800 '>Delete</button> </td>
+                                            <td className='py-4'> <button onClick={()=> handleDeleteSeller(seller._id,seller.email)} className='btn btn-xs bg-red-800 '>Delete</button> </td>
                                         </tr>)
                                     }
                                 </tbody>

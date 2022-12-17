@@ -8,9 +8,9 @@ import Brand from '../../Pages/Brand/Brand';
 import AddProduct from '../../Pages/dashboard/AddProduct/AddProduct';
 import AllSeller from '../../Pages/dashboard/AllSeller/AllSeller';
 import Orders from '../../Pages/dashboard/Orders/Orders';
+import Payment from '../../Pages/dashboard/Payment/Payment';
 import Home from '../../Pages/Home/Home';
 import Login from '../../Pages/LogIn/Login';
-import Products from '../../Pages/Products/Products';
 import SignUp from '../../Pages/SignUp/SignUp';
 import WrongPage from '../../Pages/WrongPage/WrongPage';
 import AdminRoute from '../AdminRoute/AdminRoute';
@@ -60,7 +60,12 @@ const router = createBrowserRouter([
            {
             path:'/dashboard/all-seller',
             element:<AdminRoute><AllSeller></AllSeller></AdminRoute>
-           }
+           },
+           {
+            path:'/dashboard/payment/:id',
+            loader:({params})=>fetch(`http://localhost:5000/payments/${params.id}`),
+            element:<PrivateRoute><Payment></Payment> </PrivateRoute>
+           },
         ]
     },
 //register layout
